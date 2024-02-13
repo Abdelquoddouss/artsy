@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProject;
 use App\Models\Partenaires;
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -47,10 +48,15 @@ class ProjectController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Project $project)
+    
+
+    public function show($id)
     {
-        //
+        $project = Project::findOrFail($id);
+        $users = User::all(); // Récupérez tous les utilisateurs
+        return view('admin.DetailProject', compact('project', 'users'));
     }
+    
 
     /**
      * Show the form for editing the specified resource.
@@ -81,5 +87,10 @@ class ProjectController extends Controller
         $projects = Project::findOrFail($id);
         $projects->delete();
         return redirect()->route('projects')->with('success', 'Project supprimé avec succès.');
+    }
+
+    public function ajoute()
+    {
+        
     }
 }

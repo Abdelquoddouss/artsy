@@ -27,8 +27,7 @@
 
                                 <th scope="col" class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                 Title
-                                </th>
-
+                                </th> 
                                 <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                 Genre
                                 </th>
@@ -39,7 +38,7 @@
                                 <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">partenaire</th>
                                 <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">edite</th>
                                 <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">delete</th>
-
+                                <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">detail</th>
                             </tr>
                         @foreach($projects as $project)
                             <tr>
@@ -52,12 +51,12 @@
                                 <td>{{$project->name}}</td>
                                 <td>{{ $project->partenaire->name }}</td>
                                 <td><a href="{{ route('projects.edit', $project->id) }}" class="text-blue-500 hover:underline">Editer</a></td>
-
                                 <td><form action="{{ route('projects.destroy', $project->id) }}" method="post">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="text-red-500 hover:underline">Supprimer</button>
                                             </form></td>
+                                            <td><a href="{{route('projects.show',$project->id)}}" class="text-blue-500 hover:underline">Detail</a></td>
                             </tr>
                           @endforeach
                         </thead>

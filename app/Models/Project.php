@@ -14,7 +14,7 @@ class Project extends Model implements HasMedia
     protected $fillable = ['name','titre','genre','description',
     'publication_year','partenaires_id'];
 
-    public function partenaire()
+ public function partenaire()
 {
     return $this->belongsTo('App\Models\Partenaires', 'partenaires_id');
 }
