@@ -22,7 +22,12 @@ class StoreProject extends FormRequest
     public function rules(): array
     {
         return [
-           
+            'titre' => 'required|string|max:255',
+            'genre' => 'required|string|max:255',
+            'description' => 'required|string',
+            'publication_year' => 'required|date',
+            'partenaires_id' => 'nullable|required|exists:partenaires,id',
+            'img' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 }

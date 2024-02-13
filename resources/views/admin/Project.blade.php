@@ -1,6 +1,6 @@
 @extends('master')
 @section('content')
-
+<div class="w-full overflow-x-hidden border-t flex flex-col">
 <div class="py-12">
         
 <a href="{{route('projects.create')}}" type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Add new project</a>
@@ -26,31 +26,45 @@
                                 </th>
 
                                 <th scope="col" class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                    Name
+                                Title
                                 </th>
 
                                 <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                    Email
+                                Genre
                                 </th>
-                                <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">date de cration</th>
-                                <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Sa Role</th>
-                                <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Delete</th>
+                                <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">description</th>
+                                <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">image</th>
+                                <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Publication_year</th>
+                                <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">name</th>
+                                <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">partenaire</th>
+                                <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">edite</th>
+                                <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">delete</th>
 
                             </tr>
-                      
+                        @foreach($projects as $project)
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>{{$project->id}}</td>
+                                <td>{{$project->titre}}</td>
+                                <td>{{$project->genre}}</td>
+                                <td>{{$project->description}}</td>
+                                <td><img src="{{ $project->getFirstMediaUrl('images') }}" alt="Project Image" class="w-20 h-20 object-cover"></td>
+                                <td>{{$project->publication_year}}</td>
+                                <td>{{$project->name}}</td>
+                                <td>{{ $project->partenaire->name }}</td>
+                                <td><a href="{{ route('projects.edit', $project->id) }}" class="text-blue-500 hover:underline">Editer</a></td>
+
+                                <td><form action="{{ route('projects.destroy', $project->id) }}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-red-500 hover:underline">Supprimer</button>
+                                            </form></td>
                             </tr>
-                          
+                          @endforeach
                         </thead>
                        
                     </table>
                     </div>
+                </div>
                 </div>
                 
 @endsection

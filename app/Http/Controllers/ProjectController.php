@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProject;
+use App\Models\Partenaires;
 use App\Models\Project;
 use Illuminate\Http\Request;
 
@@ -12,7 +14,8 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return view('admin.Project');
+        $projects = Project::all();
+        return view('admin.Project', compact('projects'));
     }
 
     /**
@@ -20,15 +23,25 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('admin.AddProject');
+        $partenaires = Partenaires::all();
+    return view('admin.AddProject', compact('partenaires'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProject $request)
     {
-        //
+        try{
+            
+        $project=Project::create($request->all());
+        $project->addMediaFromRequest('img')->toMediaCollection('images');
+        return redirect()->route('projects.index');
+
+        }catch(\Exception $e){
+
+            return redirect()->back();
+        }
     }
 
     /**
@@ -42,24 +55,31 @@ class ProjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Project $project)
+    public function edit(string $id)
     {
-        //
+        $projects = Project::find($id);
+        $partners = Partenaires::all();
+        return view('admin.EditProject', compact('projects','partners'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request, string $id)
     {
-        //
+        $projects = Project::findOrFail($id);
+        $projects->update($request->except('_token'));
+        return redirect()->route('projects.index')->with('success', 'Project mis à jour avec succès.');
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Project $project)
+    public function destroy(string $id)
     {
-        //
+        $projects = Project::findOrFail($id);
+        $projects->delete();
+        return redirect()->route('projects')->with('success', 'Project supprimé avec succès.');
     }
 }
