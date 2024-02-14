@@ -19,6 +19,14 @@ class ProjectController extends Controller
         return view('admin.Project', compact('projects'));
     }
 
+
+    public function index2()
+    {
+        $projects = Project::all();
+        return view('welcome', compact('projects'));
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -56,6 +64,13 @@ class ProjectController extends Controller
         $users = User::all(); // Récupérez tous les utilisateurs
         return view('admin.DetailProject', compact('project', 'users'));
     }
+
+    public function show2($id)
+    {
+        $project = Project::findOrFail($id);
+        return view('detailProjectUser', compact('project'));
+    }
+
     
 
     /**
@@ -89,8 +104,12 @@ class ProjectController extends Controller
         return redirect()->route('projects')->with('success', 'Project supprimé avec succès.');
     }
 
-    public function ajoute()
+    public function ajoute(Request $request, $id)
     {
-        
+        $project = Project::findOrFail($id);
+        $project->users()->sync($request->input('users', []));
+    
+        return redirect()->back()->with('success', 'Utilisateurs ajoutés au projet avec succès.');
     }
+    
 }

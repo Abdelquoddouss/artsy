@@ -43,6 +43,9 @@
     Route::put('/partenaire/{partenaire}', [PartenairesController::class, 'update'])->name('partenaire.update');
     Route::delete('/partenaire/{id}', [PartenairesController::class, 'destroy'])->name('partenaire.destroy');
 
+    Route::post('/project/{id}/ajoute', [ProjectController::class, 'ajoute'])->name('projects.ajoute');
+    Route::get('/',[ProjectController::class, 'index2']);
+    Route::get('/project/{id}',[ProjectController::class,'show2'])->name('project.show2');
     Route::resource('projects',ProjectController::class);
 
 

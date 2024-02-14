@@ -29,7 +29,8 @@
                 <p class="text-gray-600 dark:text-gray-300">{{ $project->name }}</p>
 
           <br>
-            <form action="{{route(projects.ajoute)}}" method="post">
+            <form action="{{ route('projects.ajoute', ['id' => $project->id]) }}" method="post">
+            @csrf
             <label for="partenaire" class="mt-6 text-lg font-medium text-blue-500">Select a partner</label>
             <select class="js-example-basic-multiple select2 " name="users[]" multiple="multiple" style="width: 100%;">
                                     <option value="" selected disabled>Choose a partner</option>
