@@ -44,8 +44,12 @@
     Route::delete('/partenaire/{id}', [PartenairesController::class, 'destroy'])->name('partenaire.destroy');
 
     Route::post('/project/{id}/ajoute', [ProjectController::class, 'ajoute'])->name('projects.ajoute');
+    Route::get('/project/ajoin', [ProjectController::class, 'ajoin'])->name('projects.ajoin');
+    Route::post('/project/accept/{id}', [ProjectController::class, 'accept'])->name('projects.accept');
+    Route::post('/project/refuse/{id}', [ProjectController::class, 'refuse'])->name('projects.refuse');
+
     Route::get('/',[ProjectController::class, 'index2']);
-    Route::get('/project/{id}',[ProjectController::class,'show2'])->name('project.show2');
+    Route::get('/project/{id}',[ProjectController::class,'show2'])->name('project.show2'); 
     Route::resource('projects',ProjectController::class);
 
 

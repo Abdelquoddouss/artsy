@@ -21,9 +21,10 @@
         .active-nav-link { background: #1947ee; }
         .nav-item:hover { background: #1947ee; }
         .account-link:hover { background: #3d68ff; }
-    </style>
+    </style> 
 </head>
 <body class="bg-gray-100 font-family-karla flex">
+
 
     <div class="w-full flex flex-col h-screen overflow-y-hidden">
     <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
@@ -130,7 +131,27 @@
                     <h3 class="mt-6 text-lg font-medium text-blue-500">name</h3>
                     <p class="text-gray-600 dark:text-gray-300">{{ $project->name }}</p>
 
+                    <h3 class="mt-6 text-lg font-medium text-blue-500">les artistes</h3> 
+                    @foreach($project->users as $user)
+                        <p class="text-gray-600 dark:text-gray-300">{{ $user->name }}</p>
+                    @endforeach
                     <br>
+                    <form action="{{ route('projects.ajoute', $project->id) }}" method="POST" id="joinForm" style="display: none;">
+                        @csrf
+                    </form>
+                     <a href="#" onclick="event.preventDefault(); document.getElementById('joinForm').submit();" type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">participer à ce projet</a>
+                     @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
                 </div>
             </div>
         </div>

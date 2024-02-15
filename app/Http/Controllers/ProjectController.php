@@ -67,8 +67,9 @@ class ProjectController extends Controller
 
     public function show2($id)
     {
+        $users = User::all();
         $project = Project::findOrFail($id);
-        return view('detailProjectUser', compact('project'));
+        return view('detailProjectUser', compact('project','users'));
     }
 
     
@@ -106,10 +107,56 @@ class ProjectController extends Controller
 
     public function ajoute(Request $request, $id)
     {
-        $project = Project::findOrFail($id);
-        $project->users()->sync($request->input('users', []));
+        try {
+            $project = Project::findOrFail($id);
+            $user = auth()->user(); // Récupérer l'utilisateur authentifié
     
-        return redirect()->back()->with('success', 'Utilisateurs ajoutés au projet avec succès.');
+            // Enregistrer la demande de participation dans la base de données avec le statut "en attente"
+            $project->pendingUsers()->attach($user);
+    
+            // Rediriger avec un message de succès
+            return redirect()->back()->with('success', 'Votre demande de participation a été soumise avec succès et est en attente d\'approbation.');
+        } catch (\Exception $e) {
+            // En cas d'erreur, rediriger avec un message d'erreur et le message d'erreur spécifique
+            return redirect()->back()->with('error', 'Une erreur est survenue lors de la soumission de votre demande de participation. Message d\'erreur : ' . $e->getMessage());
+        }
     }
+
+    public function ajoin()
+{
+    $projects = Project::all();
+    return view('admin.AjouteArt', compact('projects'));
+}
+
+public function accept($id)
+{
+    try {
+        $project = Project::findOrFail($id);
+   
+        $project->update(['status' => 'accepted']);
+
+        return redirect()->back()->with('success', 'Le projet a été accepté avec succès.');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Une erreur est survenue lors de l\'acceptation du projet. Message d\'erreur : ' . $e->getMessage());
+    }
+}
+
+public function refuse($id)
+{
+    try {
+        $project = Project::findOrFail($id);
+        $project->update(['status' => 'refused']);
+
+        return redirect()->back()->with('success', 'Le projet a été refusé avec succès.');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Une erreur est survenue lors du refus du projet. Message d\'erreur : ' . $e->getMessage());
+    }
+}
+
+
+    
+    
+
+    
     
 }
